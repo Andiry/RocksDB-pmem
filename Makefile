@@ -898,7 +898,7 @@ librocksdb_env_basic_test.a: env/env_basic_test.o $(LIBOBJECTS) $(TESTHARNESS)
 	$(AM_V_AR)rm -f $@
 	$(AM_V_at)$(AR) $(ARFLAGS) $@ $^
 
-db_bench: tools/db_bench.o $(BENCHTOOLOBJECTS)
+db_bench: tools/db_bench.o $(BENCHTOOLOBJECTS) env/pmem.o
 	$(AM_LINK)
 
 cache_bench: cache/cache_bench.o $(LIBOBJECTS) $(TESTUTIL)

@@ -495,7 +495,8 @@ else()
   list(APPEND SOURCES
     port/port_posix.cc
     env/env_posix.cc
-    env/io_posix.cc)
+    env/io_posix.cc
+    env/pmem.cc)
 endif()
 
 if(WIN32)

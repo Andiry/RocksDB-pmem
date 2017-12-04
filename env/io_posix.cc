@@ -27,6 +27,7 @@
 #include <sys/syscall.h>
 #endif
 #include "env/posix_logger.h"
+#include "env/pmem.h"
 #include "monitoring/iostats_context_imp.h"
 #include "port/port.h"
 #include "rocksdb/slice.h"
@@ -534,6 +535,7 @@ Status PosixMmapFile::Msync() {
   size_t p2 = TruncateToPageBoundary(dst_ - base_ - 1);
   last_sync_ = dst_;
   TEST_KILL_RANDOM("PosixMmapFile::Msync:0", rocksdb_kill_odds);
+//  pmem_flush(last_sync_, dst_ - last_sync_);
   if (msync(base_ + p1, p2 - p1 + page_size_, MS_SYNC) < 0) {
     return IOError(filename_, errno);
   }
