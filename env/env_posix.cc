@@ -64,6 +64,10 @@
 #if !defined(EXT4_SUPER_MAGIC)
 #define EXT4_SUPER_MAGIC 0xEF53
 #endif
+#if !defined(NOVA_SUPER_MAGIC)
+#define NOVA_SUPER_MAGIC 0x4E4F5641
+#endif
+
 
 namespace rocksdb {
 
@@ -824,6 +828,8 @@ class PosixEnv : public Env {
       case XFS_SUPER_MAGIC:
         return true;
       case TMPFS_MAGIC:
+        return true;
+      case NOVA_SUPER_MAGIC:
         return true;
       default:
         return false;
