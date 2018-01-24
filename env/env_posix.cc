@@ -41,6 +41,7 @@
 #include <vector>
 
 #include "env/io_posix.h"
+#include "env/pmem.h"
 #include "env/posix_logger.h"
 #include "monitoring/iostats_context_imp.h"
 #include "monitoring/thread_status_updater.h"
@@ -783,8 +784,8 @@ class PosixEnv : public Env {
   EnvOptions OptimizeForLogWrite(const EnvOptions& env_options,
                                  const DBOptions& db_options) const override {
     EnvOptions optimized = env_options;
-    optimized.use_mmap_writes = false;
-//    optimized.use_mmap_writes = true;
+//    optimized.use_mmap_writes = false;
+    optimized.use_mmap_writes = true;
     optimized.use_direct_writes = false;
     optimized.bytes_per_sync = db_options.wal_bytes_per_sync;
     // TODO(icanadi) it's faster if fallocate_with_keep_size is false, but it

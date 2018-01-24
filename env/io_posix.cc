@@ -536,9 +536,10 @@ Status PosixMmapFile::Msync() {
   last_sync_ = dst_;
   TEST_KILL_RANDOM("PosixMmapFile::Msync:0", rocksdb_kill_odds);
 //  pmem_flush(last_sync_, dst_ - last_sync_);
-  if (msync(base_ + p1, p2 - p1 + page_size_, MS_SYNC) < 0) {
-    return IOError(filename_, errno);
-  }
+  pmem_drain();
+//  if (msync(base_ + p1, p2 - p1 + page_size_, MS_SYNC) < 0) {
+//    return IOError(filename_, errno);
+//  }
   return Status::OK();
 }
 
@@ -588,7 +589,8 @@ Status PosixMmapFile::Append(const Slice& data) {
     }
 
     size_t n = (left <= avail) ? left : avail;
-    memcpy(dst_, src, n);
+//    memcpy(dst_, src, n);
+    pmem_memcpy_nodrain(dst_, src, n);
     dst_ += n;
     src += n;
     left -= n;
@@ -625,9 +627,9 @@ Status PosixMmapFile::Close() {
 Status PosixMmapFile::Flush() { return Status::OK(); }
 
 Status PosixMmapFile::Sync() {
-  if (fdatasync(fd_) < 0) {
-    return IOError(filename_, errno);
-  }
+//  if (fdatasync(fd_) < 0) {
+//    return IOError(filename_, errno);
+//  }
 
   return Msync();
 }
@@ -636,9 +638,9 @@ Status PosixMmapFile::Sync() {
  * Flush data as well as metadata to stable storage.
  */
 Status PosixMmapFile::Fsync() {
-  if (fsync(fd_) < 0) {
-    return IOError(filename_, errno);
-  }
+//  if (fsync(fd_) < 0) {
+//    return IOError(filename_, errno);
+//  }
 
   return Msync();
 }
